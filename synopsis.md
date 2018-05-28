@@ -48,6 +48,7 @@
 ## Epsilon-Automaten
 
 - NEA erweitern: Zustandswechsel *ohne* Zeichen einzulesen (Epsilon)
+- Schöner Epsilon-Automat: Genau ein Endzustand, keine Transitionen aus Endzustand
 
 ### Epsilon-Abschluss
 
@@ -132,8 +133,59 @@
   - F: Endzustände
   - Annahme dass Q und Gamma disjunkt
 
-# Reguläre Sprachen
+## Reguläre Sprachen
 
-- Mit Alphabet Sigma, setze:
+- Mit Alphabet Sigma, definiere reg(Sigma) als:
     - Schnitt in reg(Sigma), Raute in reg(Sigma), foreach a in Sigma: a in reg(Sigma)
     - Mit r, s in reg(Sigma): (r + s), (r o s), (r*) in reg(Sigma)
+      - Notation: (r o s) = (rs)
+
+- Für alle r in reg(Sigma): Definiere L(r) als:
+  - L(leer) = leer,
+  - L(Raute) = {Epsilon}
+  - L(a) = {a}, foreach a in Sigma
+  - L(s1 + s2) = L(s1) U L(s2)
+  - L(s1 o s2) = L(s1) . L(s2)
+  - L(s*) = L(s)*
+
+- Sprache L regulär gdw ex r in reg(Sigma): L = L(r)
+
+## Kleene's Äquivalenzsatz
+
+- Äquivalent sind, für Sprache L:
+  - L ist regulär
+  - L ist DEA-akzeptierbar
+  - L ist NEA-akzeptierbar
+  - L ist Epsilon-Akzeptierbar
+
+# Grammatiken
+
+- Elemente der Sprache durch endlich viele vorgegebene Regeln in endlich vielen Schritten erzeugt.
+
+## Chomsky-Grammatik
+
+- G = (N, T, P, S):
+  - N: Alphabet nichtterminaler Zeichen, kommen in Produktionen vor, zwecks Aufbau
+  - T: Alphabet der terminalen Zeichen (N, T disjunkt), kommen in Wörtern d Sprache vor
+  - P: Produktionen, Teilmenge von (N U T)+ x (N U T)*
+  - S in N: Startsymbol
+
+- Erzeugte Sprache: Wörter über Terminale, die sich ausgehend von Startsymbol, durch Produktionen, erzeugen lassen
+
+- Wort w' unmittelbar ableitbar, falls: w = xuy (x, y in (N U T)*), w' = xvy, und ex Produktion (u, v)
+- Wort w' ableitbar, falls Kette von Produktionen existiert, so dass oben
+
+### Bsp
+
+- G = ({S}, {0, 1}, {(01, 10)}, S)
+  - 0011 -> 0101 -> 1001 -> 1010 -> 1100 (jeweils Produktion 01 -> 10)
+  - Erlaubt sortieren von Wörtern aus 0 und 1
+- G = ({S}, {0, 1}, {(S, 0S1), (S, Epislon)}, S)
+  - dh: S -> Epsilon, S -> 0S1, 0S1 -> 00S11, ...
+  - => L = { 0^n1^n }, n >= 0
+
+### Notation
+
+- Produktionen: Anstelle von {(a, b), (a, c), {c, d)}:
+  - a -> b, a -> c, c -> d
+  - Oder noch kompakter: a -> b | c, c -> d
